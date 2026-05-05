@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useState } from 'react';
+import { Route, Routes, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import Login from './pages/LoginPage';
 
 
 function App() {
-  const [message, setMessage] = useState("");
+  // const { user } = useContext(AppContext);
+  // const navigate = useNavigate();
+  // const currentLocation = useLocation().pathname;
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/")
-      .then(res => setMessage(res.data))
-      .catch(err => console.error(err));
-  }, []);
+  // // Navigates to dashboard if new tab is open and user exists
+  // useEffect(() => {
+  //   if (user && currentLocation === '/') {
+  //     navigate('/dashboard');
+  //   }
+  // }, []);
+
 
 
 // [ '127.0.0.53' ]
   return (
-    <div>
-      <h1>MERN Stack App</h1>
-      <p>{message}</p>
-    </div>
+    <Routes>
+      <Route path="/" element={<Login />} />
+    </Routes>
   );
 }
 
