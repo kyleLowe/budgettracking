@@ -1,6 +1,7 @@
+import { createTheme } from '@mui/material/styles';
 import type { ThemeOptions } from '@mui/material/styles';
 
-export const themeOptions: ThemeOptions = {
+const themeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
@@ -21,3 +22,5 @@ export const themeOptions: ThemeOptions = {
     divider: '#05e6ff',
   },
 };
+
+export const theme = createTheme(themeOptions);

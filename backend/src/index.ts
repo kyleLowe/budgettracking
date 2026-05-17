@@ -51,6 +51,7 @@ app.use(
 );
 
 app.use('/home', authRoutes);
+app.use('/user', authMiddleware, userRoutes);
 
 // Custom error handling middleware. It handles random errors and checks its type and format and returns it
 app.use((err: BaseError | Error, req: Request, res: Response, next: NextFunction) => {
