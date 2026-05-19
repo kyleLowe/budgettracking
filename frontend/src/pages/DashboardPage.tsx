@@ -1,8 +1,10 @@
+import NavBar from "../components/NavBar";
+
 function DashboardPage() {
     
 
 
-    return(<div><p>Dashboard</p></div>)
+    return(<div><NavBar /><p>Dashboard</p></div>)
 }
 
 export default DashboardPage;
