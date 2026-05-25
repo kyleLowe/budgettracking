@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { IPurchase } from "./Purchase";
+import { ITransaction } from "./Transaction";
 
 export enum SubscriptionFrequency {
     DAILY = "daily",
@@ -10,7 +10,7 @@ export enum SubscriptionFrequency {
     YEARLY = "yearly",
 }
 
-export interface ISubscription extends IPurchase {
+export interface ISubscription extends ITransaction {
     frequency: SubscriptionFrequency;
 }
 
