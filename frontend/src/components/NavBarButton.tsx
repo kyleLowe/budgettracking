@@ -1,11 +1,8 @@
-import { ListItemButton, ListItemText } from "@mui/material";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import {Link} from 'react-router-dom';
+import type NavBarButtonProps from "../interfaces/NavbarButtonInterface";
 
-interface NavBarButtonProps {
-    icon: any;
-    title: string;
-    to: string;
-}
 
 export default function NavBarButton({ icon, title, to }: NavBarButtonProps) {
     return(

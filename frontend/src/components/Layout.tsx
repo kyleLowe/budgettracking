@@ -1,4 +1,5 @@
-import { Stack, Box } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import type { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {

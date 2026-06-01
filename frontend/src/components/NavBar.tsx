@@ -5,15 +5,22 @@ import NavBarButton from "./NavBarButton";
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import PaymentIcon from '@mui/icons-material/Payment';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutButton from "./LogoutButton";
 
 export default function NavBar() {
     return(
         <Drawer variant="permanent" anchor="left">
-            <Divider />
             <List>
                 <NavBarButton icon={<AnalyticsIcon/>} title="Dashboard" to="/dashboard" />
                 <NavBarButton icon={<PaymentIcon/>} title="Purchases" to="/purchase" />
                 <NavBarButton icon={<CurrencyExchangeIcon/>} title="Subscriptions" to="/subscription" />
+            </List>
+            <Divider />
+            <List>
+                <NavBarButton icon={<AccountCircleIcon/>} title="Profile" to="/profile" />
+                <LogoutButton icon={<LogoutIcon/>} title="Logout" to="/logout" />
             </List>
         </Drawer>
     )
