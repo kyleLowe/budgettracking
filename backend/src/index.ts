@@ -10,6 +10,7 @@ import session from 'express-session';
 import { BaseError } from './errors/CustomError';
 import authRoutes from './routes/AuthRoutes';
 import userRoutes from './routes/UserRoutes';
+import currencyRoutes from './routes/CurrencyRoutes';
 import authMiddleware from './middleware/auth';
 import cors from 'cors';
 import mongoose from "mongoose";
@@ -52,6 +53,7 @@ app.use(
 
 app.use('/home', authRoutes);
 app.use('/user', authMiddleware, userRoutes);
+app.use('/currency', authMiddleware, currencyRoutes);
 
 // Custom error handling middleware. It handles random errors and checks its type and format and returns it
 app.use((err: BaseError | Error, req: Request, res: Response, next: NextFunction) => {
