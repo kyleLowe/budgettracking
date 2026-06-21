@@ -13,6 +13,7 @@ export enum HTTPStatusCode {
   Forbidden = 403,
   NotFound = 404,
   MethodNotAllowed = 405,
+  NotAcceptable = 406,
   RequestTimeout = 408,
   Conflict = 409,
   Gone = 410,

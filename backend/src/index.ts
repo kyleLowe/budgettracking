@@ -14,6 +14,7 @@ import currencyRoutes from './routes/CurrencyRoutes';
 import authMiddleware from './middleware/auth';
 import cors from 'cors';
 import mongoose from "mongoose";
+import categoryRoutes from "./routes/CategoryRoutes";
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use(
 app.use('/home', authRoutes);
 app.use('/user', authMiddleware, userRoutes);
 app.use('/currency', authMiddleware, currencyRoutes);
+app.use('/category', authMiddleware, categoryRoutes);
 
 // Custom error handling middleware. It handles random errors and checks its type and format and returns it
 app.use((err: BaseError | Error, req: Request, res: Response, next: NextFunction) => {
