@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
-import Transaction from '../models/Transaction';
+import Transaction, {paymentType} from '../models/Transaction';
 
-export const getTransactionByID = async (_transactionID: Types.ObjectId | undefined) => {
+export const getTransactionByID = async (_transactionID: Types.ObjectId) => {
     const transaction = await Transaction.findById(_transactionID);
     return transaction;
 };
@@ -16,7 +16,7 @@ export const getTransactionsByDate = async (_startDate: Date, _endDate: Date) =>
     return transactions;
 };
 
-export const createTransaction = async (_userId: Types.ObjectId, amount: number, currency: Types.ObjectId, category: Types.ObjectId, paymentMethod: string, store: string, name: string, note: string) => {
+export const createTransaction = async (_userId: Types.ObjectId, amount: number, currency: string, category: Types.ObjectId, paymentMethod: string, store: string, name: string, note: string, paymentType: paymentType, date: Date) => {
     const transaction = new Transaction({
         userId: _userId,
         amount: amount,
@@ -25,18 +25,20 @@ export const createTransaction = async (_userId: Types.ObjectId, amount: number,
         paymentMethod: paymentMethod,
         store: store,
         name: name,
-        note: note
+        note: note,
+        paymentType: paymentType,
+        date: date
     });
     await transaction.save()
     return transaction;
 };
 
-export const deleteTransaction = async (_transactionID: Types.ObjectId | undefined) => {
+export const deleteTransaction = async (_transactionID: Types.ObjectId) => {
     const transaction = await Transaction.findByIdAndDelete(_transactionID);
     return transaction;
 };
 
-export const updateTransaction = async (_transactionID: Types.ObjectId | undefined, _userId: Types.ObjectId | undefined, amount: number, currency: Types.ObjectId, category: Types.ObjectId, paymentMethod: string, store: string, name: string, note: string) => {
+export const updateTransaction = async (_transactionID: Types.ObjectId, _userId: Types.ObjectId, amount: number, currency: string, category: Types.ObjectId, paymentMethod: string, store: string, name: string, note: string, paymentType: paymentType, date: Date) => {
     const transaction = await Transaction.findByIdAndUpdate(_transactionID, {
         userId: _userId,
         amount: amount,
@@ -45,7 +47,9 @@ export const updateTransaction = async (_transactionID: Types.ObjectId | undefin
         paymentMethod: paymentMethod,
         store: store,
         name: name,
-        note: note
+        note: note,
+        paymentType: paymentType,
+        date: date
     });
     return transaction;
 };
