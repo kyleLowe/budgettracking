@@ -4,17 +4,18 @@ export const getCurrencyByISOCode = ( _currencyCode: string) => {
     return currency;
 };
 
-export const getAllCurrenciesISOCode = async () => {
-    const currencies = curcode.codes();
-    return currencies;
-};  
-
 export const getCurrencyByCountry = ( _currencyCountry: string) => {
     const currency = curcode.country(_currencyCountry);
     return currency;
 };
 
+
 export const getAllCurrenciesByCountry = async () => {
     const currencies = curcode.countries();
     return currencies;
 };
+
+export const getAllCurrenciesISOCode = async () => {
+    const currencies = curcode.codes();
+    return currencies;
+};  

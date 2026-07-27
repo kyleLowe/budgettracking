@@ -11,6 +11,9 @@ interface IAppContext{
     logoutUser: () => Promise<AxiosResponse<any> | null>;
     checkAuthentication: () => void;
     getUserData: () => IUser | null;
+    getAllCurrencies: () => Promise<AxiosResponse<any> | null>;
+    getCurrencyByISOCode: (currencyCode: string) => Promise<AxiosResponse<any> | null>;
+    getCurrencyByCountry: (currencyCountry: string) => Promise<AxiosResponse<any> | null>;
     error: null | string;
 }
 
@@ -21,6 +24,9 @@ const AppContext = createContext<IAppContext>({
     logoutUser: async () => null,
     checkAuthentication: () => {},
     getUserData: () => null,
+    getAllCurrencies: async () => null,
+    getCurrencyByISOCode: async () => null,
+    getCurrencyByCountry: async () => null,
     error: null
 })
 
@@ -69,6 +75,18 @@ function AppContextProvider({ children }: AppContextProviderProps) {
         return authenticatedUser;
     }
 
+    async function getAllCurrencies() {
+        return await get('currency/');
+    }
+
+    async function getCurrencyByISOCode(currencyCode: string) {
+        return await get(`currency/code/${currencyCode}`);
+    }
+
+    async function getCurrencyByCountry(currencyCountry: string) {
+        return await get(`currency/country/${currencyCountry}`);
+    }
+
     const contextValue: IAppContext = {
         user: authenticatedUser,
         registerUser,
@@ -76,6 +94,9 @@ function AppContextProvider({ children }: AppContextProviderProps) {
         logoutUser,
         checkAuthentication,
         getUserData,
+        getAllCurrencies,
+        getCurrencyByISOCode,
+        getCurrencyByCountry,
         error
     }
     return <AppContext.Provider value={contextValue}>{loading ? null : children}</AppContext.Provider>;

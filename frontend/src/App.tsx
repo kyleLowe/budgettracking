@@ -5,7 +5,7 @@ import Dashboard from './pages/DashboardPage';
 import CssBaseLine from '@mui/material/CssBaseline';
 import { AppContext } from './providers/AppContextProvider';
 import Layout from './components/Layout';
-import PurchasePage from './pages/PurchasePage';
+import TransactionPage from './pages/TransactionPage';
 import SubscriptionPage from './pages/SubscriptionPage';
 
 
@@ -32,7 +32,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/subscription" element={<SubscriptionPage />} />
-          <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/transaction" element={<TransactionPage />} />
         </Route>
       </Routes>
     </>

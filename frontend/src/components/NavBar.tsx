@@ -14,7 +14,7 @@ export default function NavBar() {
         <Drawer variant="permanent" anchor="left">
             <List>
                 <NavBarButton icon={<AnalyticsIcon/>} title="Dashboard" to="/dashboard" />
-                <NavBarButton icon={<PaymentIcon/>} title="Purchases" to="/purchase" />
+                <NavBarButton icon={<PaymentIcon/>} title="Transactions" to="/transaction" />
                 <NavBarButton icon={<CurrencyExchangeIcon/>} title="Subscriptions" to="/subscription" />
             </List>
             <Divider />

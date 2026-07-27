@@ -1,0 +1,1 @@
+export type paymentType = 'Purchase' | 'Income';

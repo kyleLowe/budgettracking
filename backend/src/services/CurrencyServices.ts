@@ -18,7 +18,14 @@ export const getCurrencyByCountry = async (country: string) => {
     return currency;
 }
 
-export const getAllCurrenciesISOCode = async () => {
-    const currencies = await CurrencyDAO.getAllCurrenciesISOCode();
+export const getAllCurrenciesInfo = async () => {
+    const currencies = [];
+    const currenciesISO = await CurrencyDAO.getAllCurrenciesISOCode();
+    for (const code of currenciesISO) {
+        const currency = CurrencyDAO.getCurrencyByISOCode(code);
+        if (currency) {
+            currencies.push(currency);
+        }
+    }
     return currencies;
 };

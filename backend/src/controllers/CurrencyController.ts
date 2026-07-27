@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { NotFoundError } from '../errors/NotFoundError';
 import * as CurrencyServices from '../services/CurrencyServices';
 
-export const getAllCurrenciesISOCode = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllCurrenciesInfo = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const currencies:string[] = await CurrencyServices.getAllCurrenciesISOCode();
+        const currencies:object = await CurrencyServices.getAllCurrenciesInfo();
         if (!currencies) {
             throw new NotFoundError('No currencies were found in our system');
         }
