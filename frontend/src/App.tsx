@@ -7,6 +7,7 @@ import { AppContext } from './providers/AppContextProvider';
 import Layout from './components/Layout';
 import TransactionPage from './pages/TransactionPage';
 import SubscriptionPage from './pages/SubscriptionPage';
+import CategoryPage from './pages/CategoryPage';
 
 
 function App() {
@@ -23,7 +24,6 @@ function App() {
 
 
 
-// [ '127.0.0.53' ]
   return (
     <>
       <CssBaseLine />
@@ -33,6 +33,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/subscription" element={<SubscriptionPage />} />
           <Route path="/transaction" element={<TransactionPage />} />
+          <Route path="/category" element={<CategoryPage />} />
         </Route>
       </Routes>
     </>

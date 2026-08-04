@@ -7,11 +7,11 @@ export default function Layout({ children }: { children: ReactNode }) {
    <Stack direction="row" spacing={0} alignItems="flex-start">
       <Box
         sx={{
-          py: 10,
+          py: 5,
           px: {
-            xs: 10,
-            md: 50,
-            lg: 100,
+            xs: 16,
+            md: 32,
+            lg: 64,
           },
           height: '100vh',
           width: '100%',

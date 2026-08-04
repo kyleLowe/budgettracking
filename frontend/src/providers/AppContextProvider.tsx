@@ -14,6 +14,12 @@ interface IAppContext{
     getAllCurrencies: () => Promise<AxiosResponse<any> | null>;
     getCurrencyByISOCode: (currencyCode: string) => Promise<AxiosResponse<any> | null>;
     getCurrencyByCountry: (currencyCountry: string) => Promise<AxiosResponse<any> | null>;
+    getAllCategories: () => Promise<AxiosResponse<any> | null>;
+    getCategoryById: (categoryId: string) => Promise<AxiosResponse<any> | null>;
+    getCategoryByName: (categoryName: string) => Promise<AxiosResponse<any> | null>;
+    createCategory: (name: string, note: string, subcategory: any[]) => Promise<AxiosResponse<any> | null>;
+    updateCategory: (categoryId: string, name: string, note: string, subcategory: any[]) => Promise<AxiosResponse<any> | null>;
+    deleteCategory: (categoryId: string) => Promise<AxiosResponse<any> | null>;
     error: null | string;
 }
 
@@ -27,6 +33,12 @@ const AppContext = createContext<IAppContext>({
     getAllCurrencies: async () => null,
     getCurrencyByISOCode: async () => null,
     getCurrencyByCountry: async () => null,
+    getAllCategories: async () => null,
+    getCategoryById: async () => null,
+    getCategoryByName: async () => null,
+    createCategory: async () => null,
+    updateCategory: async () => null,
+    deleteCategory: async () => null,
     error: null
 })
 
@@ -86,6 +98,24 @@ function AppContextProvider({ children }: AppContextProviderProps) {
     async function getCurrencyByCountry(currencyCountry: string) {
         return await get(`currency/country/${currencyCountry}`);
     }
+    async function getAllCategories() {
+        return await get('category/');
+    }
+    async function getCategoryById(categoryId: string) {
+        return await get(`category/id/${categoryId}`);
+    }   
+    async function getCategoryByName(categoryName: string) {
+        return await get(`category/name/${categoryName}`);
+    }
+    async function createCategory(name: string, note: string, subcategory: any[]) {
+        return await post('category/create', { name, note, subcategory });
+    }
+    async function updateCategory(categoryId: string, name: string, note: string, subcategory: any[]) {
+        return await post(`category/id/${categoryId}`, { name, note, subcategory });
+    }
+    async function deleteCategory(categoryId: string) {
+        return await post(`category/id/${categoryId}`, null);
+    }
 
     const contextValue: IAppContext = {
         user: authenticatedUser,
@@ -97,6 +127,12 @@ function AppContextProvider({ children }: AppContextProviderProps) {
         getAllCurrencies,
         getCurrencyByISOCode,
         getCurrencyByCountry,
+        getAllCategories,
+        getCategoryById,
+        getCategoryByName,
+        createCategory,
+        updateCategory,
+        deleteCategory,
         error
     }
     return <AppContext.Provider value={contextValue}>{loading ? null : children}</AppContext.Provider>;
