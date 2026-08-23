@@ -49,7 +49,7 @@ interface AppContextProviderProps {
 function AppContextProvider({ children }: AppContextProviderProps) {
     const [authenticatedUser, setAuthenticatedUser] = useState<IUser | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const { get, post, error } = useContext(HTTPContext);
+    const { get, post, del, put, error } = useContext(HTTPContext);
 
       useEffect(() => {
         async function fetchData() {
@@ -111,10 +111,10 @@ function AppContextProvider({ children }: AppContextProviderProps) {
         return await post('category/create', { name, note, subcategory });
     }
     async function updateCategory(categoryId: string, name: string, note: string, subcategory: any[]) {
-        return await post(`category/id/${categoryId}`, { name, note, subcategory });
+        return await put(`category/id/${categoryId}`, { name, note, subcategory });
     }
     async function deleteCategory(categoryId: string) {
-        return await post(`category/id/${categoryId}`, null);
+        return await del(`category/id/${categoryId}`);
     }
 
     const contextValue: IAppContext = {
@@ -139,3 +139,5 @@ function AppContextProvider({ children }: AppContextProviderProps) {
 }
 
 export {AppContext, AppContextProvider};
+
+
