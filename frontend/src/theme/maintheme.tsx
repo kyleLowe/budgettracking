@@ -1,25 +1,25 @@
-import { createTheme } from '@mui/material/styles';
-import type { ThemeOptions } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
+import type { ThemeOptions } from "@mui/material/styles";
 
 const themeOptions: ThemeOptions = {
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#3f51b5',
+      main: "#3f51b5",
     },
     secondary: {
-      main: '#f50057',
+      main: "#f50057",
     },
     background: {
-      default: '#000000',
-      paper: '#000000',
+      default: "#000000",
+      paper: "#000000",
     },
     text: {
-      primary: 'rgba(0,184,212,0.8)',
-      secondary: 'rgba(0,184,212,0.6)',
-      disabled: 'rgba(0,184,212,0.38)',
+      primary: "rgba(0,184,212,0.8)",
+      secondary: "rgba(0,184,212,0.6)",
+      disabled: "rgba(0,184,212,0.38)",
     },
-    divider: '#05e6ff',
+    divider: "#05e6ff",
   },
 };
 

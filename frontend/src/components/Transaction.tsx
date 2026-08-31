@@ -18,10 +18,10 @@ export default function Transaction() {
   const [paymentType, setPaymentType] = useState<paymentType>("Purchase");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [note, setNote] = useState<string>("");
-  const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0],
+  );
   const [currencyOptions, setCurrencyOptions] = useState<any[]>([]);
-
-
 
   useEffect(() => {
     async function loadCurrencies() {
@@ -33,7 +33,6 @@ export default function Transaction() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
 
     const transactionData = {
       name,
@@ -55,12 +54,29 @@ export default function Transaction() {
       direction="column"
       spacing={2}
       alignItems="flex-start"
-      sx={{ display: "flex", alignItems: "stretch", flexDirection: "column", gap: 2, width: "100%" }}
+      sx={{
+        display: "flex",
+        alignItems: "stretch",
+        flexDirection: "column",
+        gap: 2,
+        width: "100%",
+      }}
       onSubmit={handleSubmit}
     >
       <h1>Transaction</h1>
 
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 2, width: "100%" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 2,
+          width: "100%",
+        }}
+      >
         <TextField
           id="name"
           label="Name"
@@ -79,14 +95,29 @@ export default function Transaction() {
         />
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 2, width: "100%" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 2,
+          width: "100%",
+        }}
+      >
         <Autocomplete
           id="currency"
           options={currencyOptions}
-          getOptionLabel={(option) => `${option.code} - ${option.currency} (${option.symbol})`}
+          getOptionLabel={(option) =>
+            `${option.code} - ${option.currency} (${option.symbol})`
+          }
           value={currencyOptions.find((opt) => opt.code === currency) || null}
           onChange={(_, newValue) => setCurrency(newValue?.code || "")}
-          renderInput={(params) => <TextField {...params} label="Currency" variant="outlined" />}
+          renderInput={(params) => (
+            <TextField {...params} label="Currency" variant="outlined" />
+          )}
           fullWidth
         />
 
@@ -102,7 +133,18 @@ export default function Transaction() {
         />
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 2, width: "100%" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 2,
+          width: "100%",
+        }}
+      >
         <TextField
           select
           id="payment"
@@ -128,7 +170,18 @@ export default function Transaction() {
         />
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ display: "flex", alignItems: "center", flexDirection: "row", gap: 2, width: "100%" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 2,
+          width: "100%",
+        }}
+      >
         <TextField
           id="date"
           label="Date"
@@ -149,7 +202,6 @@ export default function Transaction() {
           fullWidth
         />
       </Stack>
-
 
       <Button variant="contained" type="submit">
         Submit

@@ -1,14 +1,20 @@
-import { useContext, useEffect, type JSX } from 'react';
-import { Route, Routes, Navigate, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import Login from './pages/LoginPage';
-import Dashboard from './pages/DashboardPage';
-import CssBaseLine from '@mui/material/CssBaseline';
-import { AppContext } from './providers/AppContextProvider';
-import Layout from './components/Layout';
-import TransactionPage from './pages/TransactionPage';
-import SubscriptionPage from './pages/SubscriptionPage';
-import CategoryPage from './pages/CategoryPage';
-
+import { useContext, useEffect, type JSX } from "react";
+import {
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import Login from "./pages/LoginPage";
+import Dashboard from "./pages/DashboardPage";
+import CssBaseLine from "@mui/material/CssBaseline";
+import { AppContext } from "./providers/AppContextProvider";
+import Layout from "./components/Layout";
+import TransactionPage from "./pages/TransactionPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   const { user } = useContext(AppContext);
@@ -17,12 +23,10 @@ function App() {
 
   // Navigates to dashboard if new tab is open and user exists
   useEffect(() => {
-    if (user && currentLocation === '/') {
-      navigate('/dashboard');
+    if (user && currentLocation === "/") {
+      navigate("/dashboard");
     }
   }, []);
-
-
 
   return (
     <>
@@ -45,10 +49,10 @@ function ProtectedRoute(): JSX.Element {
 
   return user ? (
     <Layout>
-      <Outlet />{' '}
+      <Outlet />{" "}
     </Layout>
   ) : (
-    <Navigate to='/' />
+    <Navigate to="/" />
   );
 }
 

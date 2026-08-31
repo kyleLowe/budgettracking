@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, createContext, type ReactNode } from 'react';
-import axios, { type AxiosResponse } from 'axios';
+import { useState, createContext, type ReactNode } from "react";
+import axios, { type AxiosResponse } from "axios";
 
-const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '';
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? "";
 
 interface HTTPMethods {
   get: (url: string) => Promise<AxiosResponse<any> | null>;
@@ -23,7 +23,7 @@ function HTTPProvider({ children }: HTTPProviderProps) {
   const [error, setError] = useState<string | null>(null);
 
   const api = axios.create({
-    withCredentials: true
+    withCredentials: true,
   });
 
   async function get(url: string): Promise<AxiosResponse<any> | null> {
@@ -38,7 +38,10 @@ function HTTPProvider({ children }: HTTPProviderProps) {
     }
   }
 
-  async function post(url: string, request: any): Promise<AxiosResponse<any> | null> {
+  async function post(
+    url: string,
+    request: any,
+  ): Promise<AxiosResponse<any> | null> {
     try {
       const response = await api.post(`${API_BASE_URL}/${url}`, request);
       setError(null);
@@ -50,7 +53,10 @@ function HTTPProvider({ children }: HTTPProviderProps) {
     }
   }
 
-  async function put(url: string, request: any): Promise<AxiosResponse<any> | null> {
+  async function put(
+    url: string,
+    request: any,
+  ): Promise<AxiosResponse<any> | null> {
     try {
       const response = await api.put(`${API_BASE_URL}/${url}`, request);
       setError(null);
@@ -74,7 +80,10 @@ function HTTPProvider({ children }: HTTPProviderProps) {
     }
   }
 
-  async function patch(url: string, request: any): Promise<AxiosResponse<any> | null> {
+  async function patch(
+    url: string,
+    request: any,
+  ): Promise<AxiosResponse<any> | null> {
     try {
       const response = await api.patch(`${API_BASE_URL}/${url}`, request);
       setError(null);
@@ -93,11 +102,13 @@ function HTTPProvider({ children }: HTTPProviderProps) {
     put,
     patch,
     del,
-    error
+    error,
   };
 
   // Return the provider with children
-  return <HTTPContext.Provider value={contextValue}>{children}</HTTPContext.Provider>;
+  return (
+    <HTTPContext.Provider value={contextValue}>{children}</HTTPContext.Provider>
+  );
 }
 
 export { HTTPContext, HTTPProvider };

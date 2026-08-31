@@ -1,5 +1,5 @@
 export default interface NavBarButtonProps {
-    icon: any;
-    title: string;
-    to: string;
+  icon: any;
+  title: string;
+  to: string;
 }

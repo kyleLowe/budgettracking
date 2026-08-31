@@ -19,7 +19,6 @@ type CategoryProps = {
 };
 
 export default function Category({ value, onChange }: CategoryProps) {
-
   const categoryId = useId();
   const noteId = useId();
 
@@ -90,7 +89,11 @@ export default function Category({ value, onChange }: CategoryProps) {
             fullWidth
           />
 
-          <Button variant="contained" onClick={addSubcategory} style={{ marginTop: 12 }}>
+          <Button
+            variant="contained"
+            onClick={addSubcategory}
+            style={{ marginTop: 12 }}
+          >
             Add Subcategory
           </Button>
 

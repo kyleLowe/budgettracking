@@ -1,11 +1,11 @@
 import Login from "../components/Login";
 
 function LoginPage() {
-    
-    return(<div>
-            <Login />
-        </div>
-        )
+  return (
+    <div>
+      <Login />
+    </div>
+  );
 }
 
 export default LoginPage;

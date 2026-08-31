@@ -1,1 +1,1 @@
-export type paymentType = 'Purchase' | 'Income';
+export type paymentType = "Purchase" | "Income";
