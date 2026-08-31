@@ -8,56 +8,39 @@ import Table from "../components/Table";
 import MUITable from "../components/MUITable";
 
 function CategoryPage() {
-  const {createCategory, getAllCategories} = useContext(AppContext);
-  const [categoryTree, setCategoryTree] = useState<CategoryNode>({
-    name: "",
-    note: "",
-    subcategory: [],
-  });
+  const { getAllCategories } = useContext(AppContext);
   const [categories, setCategories] = useState<CategoryNode[]>();
   const [columns, setColumns] = useState<{ name: string }[]>([]);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    // Handle form submission logic here
-    console.log(categoryTree);
-    const { name, note, subcategory } = categoryTree;
-    const response = await createCategory(name, note, subcategory);
-    console.log(response);
-  }
+  const fetchCategories = async () => {
+    const response = await getAllCategories();
+    setCategories(response?.data ?? []);
+    let keys = Object.keys(response?.data[0] ?? {});
+    const removekeys = ["_id", "__v"];
+    keys = keys.filter((key) => !removekeys.includes(key));
+    setColumns(keys.map((column) => ({ name: column })));
+  };
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await getAllCategories();
-      setCategories(response?.data ?? []);
-      let keys = Object.keys(response?.data[0] ?? {});
-      const removekeys = ["_id", "__v"]
-      keys = keys.filter((key) => !removekeys.includes(key));
-      setColumns(keys.map((column) => ({ name: column })));
-    };
     void fetchCategories();
-  }, [getAllCategories]);
+  }, []);
+  return (
+    <div>
+      <NavBar />
 
-    return(<div>
-        <NavBar />
-            <Stack
-      component="form"
-      direction="column"
-      spacing={2}
-      alignItems="flex-start"
-      sx={{ display: "flex", alignItems: "stretch", flexDirection: "column", gap: 2, width: "100%" }}
-      onSubmit={handleSubmit}
-    >
       {/* <Table columns={columns} data={categories ?? []} /> */}
-      <MUITable columns={columns} data={categories ?? []} />
-        <h1>Add Category</h1>
-        <Category value={categoryTree} onChange={setCategoryTree} />
-         <Button variant="contained" type="submit">
+      <MUITable
+        columns={columns}
+        data={categories ?? []}
+        onCategoryChange={fetchCategories}
+      />
+      <h1>Add Category</h1>
+      {/* <Category value={categoryTree} onChange={setCategoryTree} onCategoryChange={fetchCategories} /> */}
+      <Button variant="contained" type="submit">
         Submit
       </Button>
-    </Stack>
-       
-    </div>)
+    </div>
+  );
 }
 
 export default CategoryPage;
