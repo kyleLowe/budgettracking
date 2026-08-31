@@ -1,5 +1,5 @@
-import { BaseError } from './CustomError';
-import { HTTPStatusCode } from '../constants/http-status-codes';
+import { BaseError } from "./CustomError";
+import { HTTPStatusCode } from "../constants/http-status-codes";
 
 export class NotFoundError extends BaseError {
   constructor(message: string) {

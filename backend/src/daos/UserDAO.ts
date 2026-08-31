@@ -1,9 +1,9 @@
-import { Types } from 'mongoose';
-import User from '../models/User';
+import { Types } from "mongoose";
+import User from "../models/User";
 
 //Finds the user in the database using the userId
 export const getUser = async (_userId: Types.ObjectId | undefined) => {
-  const user = await User.findById(_userId).select('-password');
+  const user = await User.findById(_userId).select("-password");
   return user;
 };
 
@@ -14,17 +14,21 @@ export const findExistingUser = async (email: string) => {
 };
 
 //Creates the user in the database
-export const createUser = async (name: string, password: string, email: string) => {
+export const createUser = async (
+  name: string,
+  password: string,
+  email: string,
+) => {
   const user = await User.create({
     name,
     password,
-    email
+    email,
   });
   return user;
 };
 
 //Finds the password of a user
 export const findUserPassword = async (email: string) => {
-  const user = await User.findOne({ email: email }).select('+password');
+  const user = await User.findOne({ email: email }).select("+password");
   return user;
 };
