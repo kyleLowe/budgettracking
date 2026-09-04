@@ -10,7 +10,7 @@ export interface ITransaction extends Document {
   userId: string;
   amount: number;
   currency: string;
-  category: ICategory;
+  category: string;
   paymentMethod: string;
   store: string;
   name: string;

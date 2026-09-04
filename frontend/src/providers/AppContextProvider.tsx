@@ -8,6 +8,7 @@ import {
 import type { IUser } from "../interfaces/UserInterface";
 import type { AxiosResponse } from "axios";
 import { HTTPContext } from "./HTTPProvider";
+import type { paymentType } from "../interfaces/paymentType";
 
 interface IAppContext {
   user: IUser | null;
@@ -47,7 +48,23 @@ interface IAppContext {
     subcategory: any[],
   ) => Promise<AxiosResponse<any> | null>;
   deleteCategory: (categoryId: string) => Promise<AxiosResponse<any> | null>;
+  createTransaction: (
+    transactionData: any,
+  ) => Promise<AxiosResponse<any> | null>;
   error: null | string;
+}
+
+export interface ITransaction extends Document {
+  userId: string;
+  amount: number;
+  currency: string;
+  category: string;
+  paymentMethod: string;
+  store: string;
+  name: string;
+  note?: string;
+  paymentType: paymentType;
+  date: Date;
 }
 
 const AppContext = createContext<IAppContext>({
@@ -66,6 +83,7 @@ const AppContext = createContext<IAppContext>({
   createCategory: async () => null,
   updateCategory: async () => null,
   deleteCategory: async () => null,
+  createTransaction: async () => null,
   error: null,
 });
 
@@ -156,6 +174,9 @@ function AppContextProvider({ children }: AppContextProviderProps) {
   async function deleteCategory(categoryId: string) {
     return await del(`category/id/${categoryId}`);
   }
+  async function createTransaction(transactionData: ITransaction) {
+    return await post("transaction/create", transactionData);
+  }
 
   const contextValue: IAppContext = {
     user: authenticatedUser,
@@ -173,6 +194,7 @@ function AppContextProvider({ children }: AppContextProviderProps) {
     createCategory,
     updateCategory,
     deleteCategory,
+    createTransaction,
     error,
   };
   return (

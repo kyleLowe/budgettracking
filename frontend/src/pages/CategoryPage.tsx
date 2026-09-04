@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { AppContext } from "../providers/AppContextProvider";
 import Table from "../components/Table";
-import MUITable from "../components/MUITable";
+import MUITable from "../components/MUICategoryTable";
 
 function CategoryPage() {
   const { getAllCategories } = useContext(AppContext);
@@ -27,18 +27,14 @@ function CategoryPage() {
   return (
     <div>
       <NavBar />
-
+      <h1>Add Category</h1>
       {/* <Table columns={columns} data={categories ?? []} /> */}
       <MUITable
         columns={columns}
         data={categories ?? []}
         onCategoryChange={fetchCategories}
       />
-      <h1>Add Category</h1>
       {/* <Category value={categoryTree} onChange={setCategoryTree} onCategoryChange={fetchCategories} /> */}
-      <Button variant="contained" type="submit">
-        Submit
-      </Button>
     </div>
   );
 }

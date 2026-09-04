@@ -9,11 +9,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export default function Transaction() {
-  const { getAllCurrencies } = useContext(AppContext);
+  const { user, getAllCurrencies, getAllCategories, createTransaction } =
+    useContext(AppContext);
 
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const [currency, setCurrency] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [store, setStore] = useState("");
   const [paymentType, setPaymentType] = useState<paymentType>("Purchase");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
@@ -22,30 +24,44 @@ export default function Transaction() {
     new Date().toISOString().split("T")[0],
   );
   const [currencyOptions, setCurrencyOptions] = useState<any[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<any[]>([]);
 
   useEffect(() => {
     async function loadCurrencies() {
       const response = await getAllCurrencies();
       setCurrencyOptions(response?.data?.currencies ?? []);
     }
+
+    async function loadCategories() {
+      const response = await getAllCategories();
+      setCategoryOptions(response?.data ?? []);
+    }
+
     void loadCurrencies();
-  }, [getAllCurrencies]);
+    void loadCategories();
+  }, [getAllCurrencies, getAllCategories]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!user) {
+      console.error("User is not authenticated");
+      return;
+    }
 
     const transactionData = {
+      userId: user._id,
       name,
       amount,
       currency,
+      categoryId: category,
       store,
       paymentType,
       paymentMethod,
       note,
       date,
     };
-
-    console.log("Transaction Data:", transactionData);
+    console.log(transactionData);
+    createTransaction(transactionData);
   }
 
   return (
@@ -199,6 +215,30 @@ export default function Transaction() {
           value={note}
           sx={{ flex: 3 }}
           onChange={(e) => setNote(e.target.value)}
+          fullWidth
+        />
+      </Stack>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          gap: 2,
+          width: "100%",
+        }}
+      >
+        <Autocomplete
+          id="category"
+          options={categoryOptions}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField {...params} label="Category" variant="outlined" />
+          )}
+          value={categoryOptions.find((opt) => opt._id === category) || null}
+          onChange={(_, newValue) => setCategory(newValue?._id || "")}
           fullWidth
         />
       </Stack>
