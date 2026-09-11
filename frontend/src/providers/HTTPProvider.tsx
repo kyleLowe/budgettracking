@@ -5,7 +5,10 @@ import axios, { type AxiosResponse } from "axios";
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? "";
 
 interface HTTPMethods {
-  get: (url: string) => Promise<AxiosResponse<any> | null>;
+  get: (
+    url: string,
+    request?: Record<string, string>,
+  ) => Promise<AxiosResponse<any> | null>;
   post: (url: string, request: any) => Promise<AxiosResponse<any> | null>;
   put: (url: string, request: any) => Promise<AxiosResponse<any> | null>;
   patch: (url: string, request: any) => Promise<AxiosResponse<any> | null>;
@@ -26,9 +29,14 @@ function HTTPProvider({ children }: HTTPProviderProps) {
     withCredentials: true,
   });
 
-  async function get(url: string): Promise<AxiosResponse<any> | null> {
+  async function get(
+    url: string,
+    request?: Record<string, string>,
+  ): Promise<AxiosResponse<any> | null> {
     try {
-      const response = await api.get(`${API_BASE_URL}/${url}`);
+      const response = await api.get(`${API_BASE_URL}/${url}`, {
+        params: request,
+      });
       setError(null);
       return response;
     } catch (error: any) {

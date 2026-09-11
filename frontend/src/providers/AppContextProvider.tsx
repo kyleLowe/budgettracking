@@ -51,6 +51,18 @@ interface IAppContext {
   createTransaction: (
     transactionData: any,
   ) => Promise<AxiosResponse<any> | null>;
+  updateTransaction: (
+    transactionId: string,
+    transactionData: any,
+  ) => Promise<AxiosResponse<any> | null>;
+  deleteTransaction: (
+    transactionId: string,
+  ) => Promise<AxiosResponse<any> | null>;
+  getTransaction: (transactionId: string) => Promise<AxiosResponse<any> | null>;
+  getTransactionsByDate: (
+    startDate: string,
+    endDate: string,
+  ) => Promise<AxiosResponse<any> | null>;
   error: null | string;
 }
 
@@ -84,6 +96,10 @@ const AppContext = createContext<IAppContext>({
   updateCategory: async () => null,
   deleteCategory: async () => null,
   createTransaction: async () => null,
+  updateTransaction: async () => null,
+  deleteTransaction: async () => null,
+  getTransaction: async () => null,
+  getTransactionsByDate: async () => null,
   error: null,
 });
 
@@ -174,8 +190,24 @@ function AppContextProvider({ children }: AppContextProviderProps) {
   async function deleteCategory(categoryId: string) {
     return await del(`category/id/${categoryId}`);
   }
+
+  async function getTransaction(transactionId: string) {
+    return await get(`transaction/id/${transactionId}`);
+  }
+  async function getTransactionsByDate(startDate: string, endDate: string) {
+    return await get(`transaction/date`, { startDate, endDate });
+  }
   async function createTransaction(transactionData: ITransaction) {
     return await post("transaction/create", transactionData);
+  }
+  async function updateTransaction(
+    transactionId: string,
+    transactionData: ITransaction,
+  ) {
+    return await put(`transaction/id/${transactionId}`, transactionData);
+  }
+  async function deleteTransaction(transactionId: string) {
+    return await del(`transaction/id/${transactionId}`);
   }
 
   const contextValue: IAppContext = {
@@ -195,6 +227,10 @@ function AppContextProvider({ children }: AppContextProviderProps) {
     updateCategory,
     deleteCategory,
     createTransaction,
+    updateTransaction,
+    deleteTransaction,
+    getTransaction,
+    getTransactionsByDate,
     error,
   };
   return (

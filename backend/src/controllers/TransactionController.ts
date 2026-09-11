@@ -33,9 +33,14 @@ export const getTransactionsByDate = async (
   next: NextFunction,
 ) => {
   try {
-    const { startDate, endDate } = req.body;
+    const { startDate, endDate } = req.query;
     if (!startDate || !endDate) {
       throw new NotAcceptableError("Start date and end date are required");
+    }
+    if (typeof startDate !== "string" || typeof endDate !== "string") {
+      throw new NotAcceptableError(
+        "Start date and end date must be strings in ISO format",
+      );
     }
     if (!req.session.userId) {
       throw new NotAcceptableError("User ID is required");

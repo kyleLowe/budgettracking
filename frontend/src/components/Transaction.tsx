@@ -41,7 +41,7 @@ export default function Transaction() {
     void loadCategories();
   }, [getAllCurrencies, getAllCategories]);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!user) {
       console.error("User is not authenticated");
