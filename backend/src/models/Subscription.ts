@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { ITransaction } from "./Transaction";
 
 export enum SubscriptionFrequency {
@@ -12,6 +12,7 @@ export enum SubscriptionFrequency {
 
 export interface ISubscription extends ITransaction {
   frequency: SubscriptionFrequency;
+  enabled: boolean;
 }
 
 export const subscriptionSchema = new Schema({
@@ -28,4 +29,8 @@ export const subscriptionSchema = new Schema({
     enum: Object.values(SubscriptionFrequency),
     required: true,
   },
+  paymentMethod: { type: String, required: true },
+  enabled: { type: Boolean, default: true },
 });
+
+export default model<ISubscription>("Subscription", subscriptionSchema);
