@@ -37,9 +37,13 @@ export const getTransactionsByDate = async (
     if (!startDate || !endDate) {
       throw new NotAcceptableError("Start date and end date are required");
     }
+    if (!req.session.userId) {
+      throw new NotAcceptableError("User ID is required");
+    }
     const transactions = await TransactionServices.getTransactionsByDate(
       new Date(startDate),
       new Date(endDate),
+      new Types.ObjectId(req.session.userId),
     );
     if (!transactions || transactions.length === 0) {
       throw new NotFoundError(
@@ -121,8 +125,19 @@ export const deleteTransaction = async (
       throw new NotFoundError("Transaction ID is required");
     }
     const transactionId = new Types.ObjectId(_transactionId);
-    const transaction =
-      await TransactionServices.deleteTransaction(transactionId);
+    if (!req.session.userId) {
+      throw new NotAcceptableError("User ID is required");
+    }
+    let transaction = await TransactionServices.getTransaction(transactionId);
+    if (!transaction) {
+      throw new NotFoundError("Transaction not found");
+    }
+    if (transaction.userId.toString() !== req.session.userId.toString()) {
+      throw new NotAcceptableError(
+        "You are not authorized to delete this transaction",
+      );
+    }
+    transaction = await TransactionServices.deleteTransaction(transactionId);
     if (!transaction) {
       throw new NotFoundError("Transaction not found");
     }
@@ -142,6 +157,20 @@ export const updateTransaction = async (
     if (!_transactionId) {
       throw new NotAcceptableError("Transaction ID is required");
     }
+    let transaction = await TransactionServices.getTransaction(
+      new Types.ObjectId(_transactionId),
+    );
+    if (!transaction) {
+      throw new NotFoundError("Transaction not found");
+    }
+    if (!req.session.userId) {
+      throw new NotAcceptableError("User ID is required");
+    }
+    if (transaction.userId.toString() !== req.session.userId.toString()) {
+      throw new NotAcceptableError(
+        "You are not authorized to update this transaction",
+      );
+    }
     const transactionId = new Types.ObjectId(_transactionId);
     const {
       userId,
@@ -155,7 +184,7 @@ export const updateTransaction = async (
       paymentType,
       date,
     } = req.body;
-    const transaction = await TransactionServices.updateTransaction(
+    transaction = await TransactionServices.updateTransaction(
       transactionId,
       userId,
       amount,

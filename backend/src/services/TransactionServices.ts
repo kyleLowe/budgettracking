@@ -8,7 +8,11 @@ export const getTransaction = async (transactionID: Types.ObjectId) => {
   return transaction;
 };
 
-export const getTransactionsByDate = async (startDate: Date, endDate: Date) => {
+export const getTransactionsByDate = async (
+  startDate: Date,
+  endDate: Date,
+  userId: Types.ObjectId,
+) => {
   if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
     throw new NotAcceptableError(
       "Start date and end date must be valid Date objects",
@@ -26,6 +30,7 @@ export const getTransactionsByDate = async (startDate: Date, endDate: Date) => {
   const transactions = await TransactionDAO.getTransactionsByDate(
     startDate,
     endDate,
+    userId.toString(),
   );
   return transactions;
 };

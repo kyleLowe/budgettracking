@@ -9,8 +9,10 @@ export const getTransactionByID = async (_transactionID: Types.ObjectId) => {
 export const getTransactionsByDate = async (
   _startDate: Date,
   _endDate: Date,
+  userId: string,
 ) => {
   const transactions = await Transaction.find({
+    userId: userId,
     date: {
       $gte: _startDate,
       $lte: _endDate,
