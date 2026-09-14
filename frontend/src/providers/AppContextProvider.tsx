@@ -63,6 +63,22 @@ interface IAppContext {
     startDate: string,
     endDate: string,
   ) => Promise<AxiosResponse<any> | null>;
+  getSubscriptionsByUserID: (
+    userId: string,
+  ) => Promise<AxiosResponse<any> | null>;
+  getSubscriptionByID: (
+    subscriptionId: string,
+  ) => Promise<AxiosResponse<any> | null>;
+  createSubscription: (
+    subscriptionData: any,
+  ) => Promise<AxiosResponse<any> | null>;
+  updateSubscription: (
+    subscriptionId: string,
+    subscriptionData: any,
+  ) => Promise<AxiosResponse<any> | null>;
+  deleteSubscription: (
+    subscriptionId: string,
+  ) => Promise<AxiosResponse<any> | null>;
   error: null | string;
 }
 
@@ -77,6 +93,23 @@ export interface ITransaction extends Document {
   note?: string;
   paymentType: paymentType;
   date: Date;
+}
+
+export const SubscriptionFrequency = {
+  DAILY: "daily",
+  WEEKLY: "weekly",
+  BIWEEKLY: "biweekly",
+  MONTHLY: "monthly",
+  QUARTERLY: "quarterly",
+  YEARLY: "yearly",
+} as const;
+
+export type SubscriptionFrequency =
+  (typeof SubscriptionFrequency)[keyof typeof SubscriptionFrequency];
+
+export interface ISubscription extends ITransaction {
+  frequency: SubscriptionFrequency;
+  enabled: boolean;
 }
 
 const AppContext = createContext<IAppContext>({
@@ -100,6 +133,11 @@ const AppContext = createContext<IAppContext>({
   deleteTransaction: async () => null,
   getTransaction: async () => null,
   getTransactionsByDate: async () => null,
+  getSubscriptionsByUserID: async () => null,
+  getSubscriptionByID: async () => null,
+  createSubscription: async () => null,
+  updateSubscription: async () => null,
+  deleteSubscription: async () => null,
   error: null,
 });
 
@@ -210,6 +248,29 @@ function AppContextProvider({ children }: AppContextProviderProps) {
     return await del(`transaction/id/${transactionId}`);
   }
 
+  async function getSubscriptionsByUserID(userId: string) {
+    return await get(`subscription/user/${userId}`);
+  }
+
+  async function getSubscriptionByID(subscriptionId: string) {
+    return await get(`subscription/${subscriptionId}`);
+  }
+
+  async function createSubscription(subscriptionData: ISubscription) {
+    return await post("subscription/", subscriptionData);
+  }
+
+  async function updateSubscription(
+    subscriptionId: string,
+    subscriptionData: ISubscription,
+  ) {
+    return await put(`subscription/${subscriptionId}`, subscriptionData);
+  }
+
+  async function deleteSubscription(subscriptionId: string) {
+    return await del(`subscription/${subscriptionId}`);
+  }
+
   const contextValue: IAppContext = {
     user: authenticatedUser,
     registerUser,
@@ -231,6 +292,11 @@ function AppContextProvider({ children }: AppContextProviderProps) {
     deleteTransaction,
     getTransaction,
     getTransactionsByDate,
+    getSubscriptionsByUserID,
+    getSubscriptionByID,
+    createSubscription,
+    updateSubscription,
+    deleteSubscription,
     error,
   };
   return (

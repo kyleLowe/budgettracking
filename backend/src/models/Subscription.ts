@@ -18,7 +18,7 @@ export interface ISubscription extends ITransaction {
 export const subscriptionSchema = new Schema({
   userId: { type: String, required: true },
   amount: { type: Number, required: true },
-  currency: { type: Schema.Types.ObjectId, ref: "Currency", required: true },
+  currency: { type: String, required: true },
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
   store: { type: String, required: true },
   name: { type: String, required: true },

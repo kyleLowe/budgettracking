@@ -13,6 +13,7 @@ import userRoutes from "./routes/UserRoutes";
 import currencyRoutes from "./routes/CurrencyRoutes";
 import transactionRoutes from "./routes/TransactionRoutes";
 import categoryRoutes from "./routes/CategoryRoutes";
+import subscriptionRoutes from "./routes/SubscriptionRoutes";
 import authMiddleware from "./middleware/auth";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -58,6 +59,7 @@ app.use("/user", authMiddleware, userRoutes);
 app.use("/currency", authMiddleware, currencyRoutes);
 app.use("/category", authMiddleware, categoryRoutes);
 app.use("/transaction", authMiddleware, transactionRoutes);
+app.use("/subscription", authMiddleware, subscriptionRoutes);
 
 // Custom error handling middleware. It handles random errors and checks its type and format and returns it
 app.use(
