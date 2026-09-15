@@ -47,11 +47,14 @@ function MUITable({
   >();
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [treeData, setTreeData] = useState<Category[]>([]);
-  const [newCategory, setNewCategory] = useState<CategoryNode>({
+  const emptyCategoryState = (): CategoryNode => ({
     name: "",
     note: "",
     subcategory: [],
   });
+
+  const [newCategory, setNewCategory] =
+    useState<CategoryNode>(emptyCategoryState());
   const [currentCategory, setCurrentCategory] = useState<CategoryNode | null>(
     null,
   );
@@ -188,6 +191,7 @@ function MUITable({
         startIcon={<AddIcon />}
         variant="contained"
         onClick={() => {
+          resetCategoryModalState();
           setCategoryModalOpen(true);
         }}
       >
@@ -206,9 +210,14 @@ function MUITable({
     }),
   });
 
+  const resetCategoryModalState = () => {
+    setCurrentCategory(null);
+    setNewCategory(emptyCategoryState());
+  };
+
   const closeCategoryModal = () => {
     setCategoryModalOpen(false);
-    setCurrentCategory(null);
+    resetCategoryModalState();
   };
 
   const findParentCategory = (
@@ -292,7 +301,8 @@ function MUITable({
     }
 
     await onCategoryChange?.();
-    closeCategoryModal();
+    resetCategoryModalState();
+    setCategoryModalOpen(false);
   };
 
   return (

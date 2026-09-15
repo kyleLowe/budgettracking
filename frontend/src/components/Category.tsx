@@ -6,6 +6,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
 import { useId } from "react";
+import { useState } from "react";
 
 export interface SubcategoryNode {
   _id?: string;
@@ -28,17 +29,20 @@ type CategoryProps = {
 export default function Category({ value, onChange }: CategoryProps) {
   const categoryId = useId();
   const noteId = useId();
+  const [subcategories, setSubcategories] = useState<SubcategoryNode[]>(
+    value.subcategory || [],
+  );
+  const [visibleNotes, setVisibleNotes] = useState<Record<number, boolean>>({});
+
   const addSubcategory = () => {
-    onChange({
-      ...value,
-      subcategory: [...value.subcategory, { name: "", note: "" }],
-    });
+    setSubcategories([...subcategories, { name: "", note: "" }]);
   };
 
   const updateSubcategory = (index: number, nextChild: SubcategoryNode) => {
-    const updatedChildren = [...value.subcategory];
+    const updatedChildren = [...subcategories];
     updatedChildren[index] = nextChild;
 
+    setSubcategories(updatedChildren);
     onChange({
       ...value,
       subcategory: updatedChildren,
@@ -46,6 +50,7 @@ export default function Category({ value, onChange }: CategoryProps) {
   };
 
   const removeSubcategory = (index: number) => {
+    setSubcategories(value.subcategory.filter((_, i) => i !== index));
     onChange({
       ...value,
       subcategory: value.subcategory.filter((_, i) => i !== index),
@@ -92,7 +97,7 @@ export default function Category({ value, onChange }: CategoryProps) {
             Add Subcategory
           </Button>
 
-          {value.subcategory.map((child, index) => (
+          {subcategories.map((child, index) => (
             <div
               key={`subcategory-${index}`}
               style={{
@@ -113,18 +118,32 @@ export default function Category({ value, onChange }: CategoryProps) {
                 style={{ marginBottom: 12 }}
               />
 
-              <TextField
-                label="Subcategory Note"
-                value={child.note}
-                onChange={(e) =>
-                  updateSubcategory(index, { ...child, note: e.target.value })
-                }
-                rows={3}
-                multiline
+              <Button
                 variant="outlined"
-                fullWidth
-                style={{ marginBottom: 12 }}
-              />
+                onClick={() =>
+                  setVisibleNotes((current) => ({
+                    ...current,
+                    [index]: !current[index],
+                  }))
+                }
+              >
+                {visibleNotes[index] ? "Hide Note" : "Show Note"}
+              </Button>
+
+              {visibleNotes[index] && (
+                <TextField
+                  label="Subcategory Note"
+                  value={child.note}
+                  onChange={(e) =>
+                    updateSubcategory(index, { ...child, note: e.target.value })
+                  }
+                  rows={3}
+                  multiline
+                  variant="outlined"
+                  fullWidth
+                  style={{ marginBottom: 12 }}
+                />
+              )}
 
               <Button
                 variant="outlined"
