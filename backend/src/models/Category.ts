@@ -1,9 +1,8 @@
-import { Document, InferSchemaType, model, Schema, Types } from "mongoose";
+import { Document, InferSchemaType, model, Schema } from "mongoose";
 
 export interface ISubcategory {
   name: string;
   note?: string;
-  subcategory: ISubcategory[];
 }
 
 export interface ICategory extends Document {
@@ -16,8 +15,6 @@ const subcategorySchema = new Schema({
   name: { type: String, required: true },
   note: { type: String },
 });
-
-subcategorySchema.add({ subcategory: [subcategorySchema] });
 
 export const categorySchema = new Schema({
   name: { type: String, required: true },

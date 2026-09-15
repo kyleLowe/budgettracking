@@ -15,9 +15,9 @@ import {
   lighten,
 } from "@mui/material";
 
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import { AppContext } from "../providers/AppContextProvider";
 import Category, { type CategoryNode } from "./Category";
 
@@ -29,23 +29,22 @@ type Category = {
   subRows?: Category[];
 };
 
+type MUITableProps = {
+  columns: { name: string }[];
+  data: Category[];
+  category?: CategoryNode;
+  onCategoryChange?: () => Promise<void> | void;
+};
+
 function MUITable({
   columns,
   data,
+  category,
   onCategoryChange,
-}: {
-  columns: { name: string }[];
-  data: Category[];
-  onCategoryChange?: () => Promise<void> | void;
-}) {
+}: MUITableProps) {
   const [creatingRowIndex, setCreatingRowIndex] = useState<
     number | undefined
   >();
-  const [categoryTree, setCategoryTree] = useState<CategoryNode>({
-    name: "",
-    note: "",
-    subcategory: [],
-  });
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [treeData, setTreeData] = useState<Category[]>([]);
   const [newCategory, setNewCategory] = useState<CategoryNode>({
@@ -53,6 +52,9 @@ function MUITable({
     note: "",
     subcategory: [],
   });
+  const [currentCategory, setCurrentCategory] = useState<CategoryNode | null>(
+    null,
+  );
   const { deleteCategory, updateCategory, createCategory } =
     useContext(AppContext);
 
@@ -70,6 +72,19 @@ function MUITable({
   useEffect(() => {
     setTreeData(normalizeCategories(data ?? []));
   }, [data]);
+
+  useEffect(() => {
+    if (!category) {
+      return;
+    }
+
+    setCurrentCategory({
+      ...category,
+      note: category.note ?? "",
+      subcategory: category.subcategory ?? [],
+    });
+    setCategoryModalOpen(true);
+  }, [category]);
 
   const heading = useMemo<MRT_ColumnDef<Category>[]>(
     () =>
@@ -105,8 +120,36 @@ function MUITable({
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon />
+          <IconButton
+            disabled={row.depth !== 0}
+            onClick={() => {
+              const category = row.original;
+
+              if (!category._id) {
+                return;
+              }
+
+              setCurrentCategory({
+                _id: category._id,
+                name: category.name,
+                note: category.note ?? "",
+                subcategory: (category.subcategory ?? []).map(
+                  (subcategory) => ({
+                    _id: subcategory._id,
+                    name: subcategory.name,
+                    note: subcategory.note ?? "",
+                  }),
+                ),
+              });
+
+              setCategoryModalOpen(true);
+            }}
+          >
+            <EditIcon
+              sx={{
+                visibility: row.depth === 0 ? "visible" : "hidden",
+              }}
+            />
           </IconButton>
         </Tooltip>
 
@@ -114,26 +157,22 @@ function MUITable({
           <IconButton
             color="error"
             onClick={async () => {
-              if (!row.original._id) {
+              const categoryId = row.original._id;
+
+              if (!categoryId) {
                 return;
               }
 
-              if (row.depth > 0) {
-                void removeSubcategory(row.original._id);
+              if (row.depth !== 0) {
+                await removeSubcategory(categoryId);
                 return;
               }
 
-              void deleteCategory(row.original._id);
+              await deleteCategory(categoryId);
               await onCategoryChange?.();
             }}
           >
             <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Add Subordinate">
-          <IconButton onClick={() => {}}>
-            <PersonAddAltIcon />
           </IconButton>
         </Tooltip>
       </Box>
@@ -146,7 +185,7 @@ function MUITable({
     },
     renderTopToolbarCustomActions: ({ table }) => (
       <Button
-        startIcon={<PersonAddAltIcon />}
+        startIcon={<AddIcon />}
         variant="contained"
         onClick={() => {
           setCategoryModalOpen(true);
@@ -166,6 +205,11 @@ function MUITable({
       }),
     }),
   });
+
+  const closeCategoryModal = () => {
+    setCategoryModalOpen(false);
+    setCurrentCategory(null);
+  };
 
   const findParentCategory = (
     categories: Category[],
@@ -234,14 +278,21 @@ function MUITable({
     await onCategoryChange?.();
   };
 
-  const handleCreateCategory = async () => {
-    const { name, note, subcategory } = newCategory;
-
-    await createCategory(name, note, subcategory);
+  const handleSubmitCategory = async () => {
+    if (currentCategory) {
+      const { _id, name, note, subcategory } = currentCategory;
+      if (!_id) {
+        console.error("Current category is missing _id:", currentCategory);
+        return;
+      }
+      await updateCategory(_id, name, note ?? "", subcategory);
+    } else {
+      const { name, note, subcategory } = newCategory;
+      await createCategory(name, note, subcategory);
+    }
 
     await onCategoryChange?.();
-    setNewCategory({ name: "", note: "", subcategory: [] });
-    setCategoryModalOpen(false);
+    closeCategoryModal();
   };
 
   return (
@@ -250,8 +301,8 @@ function MUITable({
 
       <Modal
         open={categoryModalOpen}
-        onClose={() => setCategoryModalOpen(false)}
-        aria-labelledby="create-category-modal"
+        onClose={closeCategoryModal}
+        aria-labelledby="category-modal"
       >
         <Box
           sx={{
@@ -269,7 +320,9 @@ function MUITable({
             overflowY: "auto",
           }}
         >
-          <h2 id="create-category-modal">Create New Category</h2>
+          <h2 id="category-modal">
+            {currentCategory ? "Edit Category" : "Create New Category"}
+          </h2>
           <Stack
             component="form"
             direction="column"
@@ -282,9 +335,18 @@ function MUITable({
               gap: 2,
               width: "100%",
             }}
-            onSubmit={handleCreateCategory}
+            onSubmit={handleSubmitCategory}
           >
-            <Category value={newCategory} onChange={setNewCategory} />
+            <Category
+              value={currentCategory ?? newCategory}
+              onChange={(value) => {
+                if (currentCategory) {
+                  setCurrentCategory(value);
+                } else {
+                  setNewCategory(value);
+                }
+              }}
+            />
 
             <Box
               sx={{
@@ -294,10 +356,8 @@ function MUITable({
                 mt: 2,
               }}
             >
-              <Button onClick={() => setCategoryModalOpen(false)}>
-                Cancel
-              </Button>
-              <Button variant="contained" onClick={handleCreateCategory}>
+              <Button onClick={closeCategoryModal}>Cancel</Button>
+              <Button variant="contained" onClick={handleSubmitCategory}>
                 Save
               </Button>
             </Box>

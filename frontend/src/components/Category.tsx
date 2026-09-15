@@ -7,10 +7,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Typography from "@mui/material/Typography";
 import { useId } from "react";
 
-export interface CategoryNode {
+export interface SubcategoryNode {
+  _id?: string;
   name: string;
   note: string;
-  subcategory: CategoryNode[];
+}
+
+export interface CategoryNode {
+  _id?: string;
+  name: string;
+  note: string;
+  subcategory: SubcategoryNode[];
 }
 
 type CategoryProps = {
@@ -21,18 +28,14 @@ type CategoryProps = {
 export default function Category({ value, onChange }: CategoryProps) {
   const categoryId = useId();
   const noteId = useId();
-
   const addSubcategory = () => {
     onChange({
       ...value,
-      subcategory: [
-        ...value.subcategory,
-        { name: "", note: "", subcategory: [] },
-      ],
+      subcategory: [...value.subcategory, { name: "", note: "" }],
     });
   };
 
-  const updateChild = (index: number, nextChild: CategoryNode) => {
+  const updateSubcategory = (index: number, nextChild: SubcategoryNode) => {
     const updatedChildren = [...value.subcategory];
     updatedChildren[index] = nextChild;
 
@@ -42,7 +45,7 @@ export default function Category({ value, onChange }: CategoryProps) {
     });
   };
 
-  const removeChild = (index: number) => {
+  const removeSubcategory = (index: number) => {
     onChange({
       ...value,
       subcategory: value.subcategory.filter((_, i) => i !== index),
@@ -52,22 +55,14 @@ export default function Category({ value, onChange }: CategoryProps) {
   return (
     <Accordion
       defaultExpanded
-      sx={{
-        marginBottom: 2,
-        border: "1px solid #3f51b5",
-        borderRadius: 2,
-      }}
+      sx={{ marginBottom: 2, border: "1px solid #3f51b5", borderRadius: 2 }}
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>{value.name || "New Category"}</Typography>
       </AccordionSummary>
 
       <AccordionDetails>
-        <div
-          style={{
-            padding: 12,
-          }}
-        >
+        <div style={{ padding: 12 }}>
           <TextField
             id={categoryId}
             label="Category"
@@ -92,22 +87,49 @@ export default function Category({ value, onChange }: CategoryProps) {
           <Button
             variant="contained"
             onClick={addSubcategory}
-            style={{ marginTop: 12 }}
+            style={{ marginTop: 12, marginBottom: 12 }}
           >
             Add Subcategory
           </Button>
 
           {value.subcategory.map((child, index) => (
-            <div key={index} style={{ marginBottom: 12, marginTop: 12 }}>
-              <Category
-                value={child}
-                onChange={(nextChild) => updateChild(index, nextChild)}
+            <div
+              key={`subcategory-${index}`}
+              style={{
+                marginBottom: 12,
+                padding: 12,
+                border: "1px solid #e0e0e0",
+                borderRadius: 8,
+              }}
+            >
+              <TextField
+                label={`Subcategory ${index + 1}`}
+                value={child.name}
+                onChange={(e) =>
+                  updateSubcategory(index, { ...child, name: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+                style={{ marginBottom: 12 }}
+              />
+
+              <TextField
+                label="Subcategory Note"
+                value={child.note}
+                onChange={(e) =>
+                  updateSubcategory(index, { ...child, note: e.target.value })
+                }
+                rows={3}
+                multiline
+                variant="outlined"
+                fullWidth
+                style={{ marginBottom: 12 }}
               />
 
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => removeChild(index)}
+                onClick={() => removeSubcategory(index)}
               >
                 Remove Subcategory
               </Button>

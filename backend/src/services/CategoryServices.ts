@@ -23,7 +23,7 @@ export const createCategory = async (
   subcategory: ISubcategory[],
   note: string,
 ) => {
-  let checkSubcategory = subcategoryCheck(subcategory);
+  const checkSubcategory = subcategoryCheck(subcategory);
   if (!checkSubcategory) {
     throw new NotAcceptableError("Invalid subcategory structure");
   }
@@ -37,7 +37,7 @@ export const updateCategory = async (
   subcategory: ISubcategory[],
   note: string,
 ) => {
-  let checkSubcategory = subcategoryCheck(subcategory);
+  const checkSubcategory = subcategoryCheck(subcategory);
   if (!checkSubcategory) {
     throw new NotAcceptableError("Invalid subcategory structure");
   }
@@ -56,17 +56,7 @@ export const deleteCategory = async (categoryId: Types.ObjectId) => {
 };
 
 const subcategoryCheck = (subcategory: ISubcategory[]) => {
-  let isValid = true;
-  subcategory.forEach((subcat) => {
-    if (!subcat.name) {
-      isValid = false;
-    }
-    if (subcat.subcategory.length > 0) {
-      const isSubcategoryValid = subcategoryCheck(subcat.subcategory);
-      if (!isSubcategoryValid) {
-        isValid = false;
-      }
-    }
-  });
-  return isValid;
+  return subcategory.every((subcat) =>
+    Boolean(subcat.name && subcat.name.trim()),
+  );
 };
