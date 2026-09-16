@@ -73,6 +73,7 @@ export const createTransaction = async (
       amount,
       currency,
       categoryId,
+      subcategoryId,
       paymentMethod,
       store,
       name,
@@ -85,6 +86,7 @@ export const createTransaction = async (
       !amount ||
       !currency ||
       !categoryId ||
+      !subcategoryId ||
       !paymentMethod ||
       !name ||
       !store ||
@@ -106,6 +108,7 @@ export const createTransaction = async (
       amount,
       currency,
       categoryId,
+      subcategoryId,
       paymentMethod,
       store,
       name,
@@ -182,6 +185,7 @@ export const updateTransaction = async (
       amount,
       currency,
       categoryId,
+      subcategoryId,
       paymentMethod,
       store,
       name,
@@ -195,6 +199,7 @@ export const updateTransaction = async (
       amount,
       currency,
       categoryId,
+      subcategoryId,
       paymentMethod,
       store,
       name,

@@ -16,6 +16,7 @@ export default function Transaction() {
   const [amount, setAmount] = useState<number>(0);
   const [currency, setCurrency] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const [subcategory, setSubcategory] = useState<string>("");
   const [store, setStore] = useState("");
   const [paymentType, setPaymentType] = useState<paymentType>("Purchase");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
@@ -25,6 +26,7 @@ export default function Transaction() {
   );
   const [currencyOptions, setCurrencyOptions] = useState<any[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<any[]>([]);
+  const [subcategoryOptions, setSubcategoryOptions] = useState<any[]>([]);
 
   useEffect(() => {
     async function loadCurrencies() {
@@ -41,6 +43,20 @@ export default function Transaction() {
     void loadCategories();
   }, [getAllCurrencies, getAllCategories]);
 
+  useEffect(() => {
+    async function loadSubcategories() {
+      if (category) {
+        const selectedCategory = categoryOptions.find(
+          (opt) => opt._id === category,
+        );
+        console.log("Selected Category:", selectedCategory);
+        setSubcategoryOptions(selectedCategory?.subcategory ?? []);
+      }
+    }
+
+    void loadSubcategories();
+  }, [category, categoryOptions]);
+
   function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!user) {
@@ -54,6 +70,7 @@ export default function Transaction() {
       amount,
       currency,
       categoryId: category,
+      subcategoryId: subcategory,
       store,
       paymentType,
       paymentMethod,
@@ -239,6 +256,19 @@ export default function Transaction() {
           )}
           value={categoryOptions.find((opt) => opt._id === category) || null}
           onChange={(_, newValue) => setCategory(newValue?._id || "")}
+          fullWidth
+        />
+        <Autocomplete
+          id="Subcategory"
+          options={subcategoryOptions}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField {...params} label="Subcategory" variant="outlined" />
+          )}
+          value={
+            subcategoryOptions.find((opt) => opt._id === subcategory) || null
+          }
+          onChange={(_, newValue) => setSubcategory(newValue?._id || "")}
           fullWidth
         />
       </Stack>

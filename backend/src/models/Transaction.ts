@@ -11,6 +11,7 @@ export interface ITransaction extends Document {
   amount: number;
   currency: string;
   category: string;
+  subcategory: string;
   paymentMethod: string;
   store: string;
   name: string;
@@ -24,6 +25,11 @@ export const transactionSchema = new Schema({
   amount: { type: Number, required: true },
   currency: { type: String, required: true },
   category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
+  subcategory: {
+    type: Schema.Types.ObjectId,
+    ref: "Subcategory",
+    required: true,
+  },
   paymentMethod: { type: String, required: true },
   store: { type: String, required: true },
   name: { type: String, required: true },
