@@ -118,18 +118,6 @@ export default function Category({ value, onChange }: CategoryProps) {
                 style={{ marginBottom: 12 }}
               />
 
-              <Button
-                variant="outlined"
-                onClick={() =>
-                  setVisibleNotes((current) => ({
-                    ...current,
-                    [index]: !current[index],
-                  }))
-                }
-              >
-                {visibleNotes[index] ? "Hide Note" : "Show Note"}
-              </Button>
-
               {visibleNotes[index] && (
                 <TextField
                   label="Subcategory Note"
@@ -144,6 +132,19 @@ export default function Category({ value, onChange }: CategoryProps) {
                   style={{ marginBottom: 12 }}
                 />
               )}
+
+              <Button
+                variant="outlined"
+                onClick={() =>
+                  setVisibleNotes((current) => ({
+                    ...current,
+                    [index]: !current[index],
+                  }))
+                }
+                sx={{ marginRight: 2 }}
+              >
+                {visibleNotes[index] ? "Hide Note" : "Show Note"}
+              </Button>
 
               <Button
                 variant="outlined"
