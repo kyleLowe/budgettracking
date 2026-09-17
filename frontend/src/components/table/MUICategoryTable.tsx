@@ -18,8 +18,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { AppContext } from "../providers/AppContextProvider";
-import Category, { type CategoryNode } from "./Category";
+import { AppContext } from "../../providers/AppContextProvider";
+import Category, { type CategoryNode } from "../Category";
 
 type Category = {
   _id?: string;

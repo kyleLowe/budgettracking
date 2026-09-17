@@ -4,8 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { AppContext } from "../providers/AppContextProvider";
-import Table from "../components/Table";
-import MUITable from "../components/MUICategoryTable";
+import MUICategoryTable from "../components/table/MUICategoryTable";
 
 function CategoryPage() {
   const { getAllCategories } = useContext(AppContext);
@@ -28,13 +27,11 @@ function CategoryPage() {
     <div>
       <NavBar />
       <h1>Add Category</h1>
-      {/* <Table columns={columns} data={categories ?? []} /> */}
-      <MUITable
+      <MUICategoryTable
         columns={columns}
         data={categories ?? []}
         onCategoryChange={fetchCategories}
       />
-      {/* <Category value={categoryTree} onChange={setCategoryTree} onCategoryChange={fetchCategories} /> */}
     </div>
   );
 }
