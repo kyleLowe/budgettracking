@@ -1,31 +1,45 @@
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { add, sub } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import Button from "@mui/material/Button";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
-export default function DateRangePicker() {
-  const [startDate, setStartDate] = useState<Date | null>(
+type DateRangePickerProps = {
+  setStartDate: Dispatch<SetStateAction<Date | null>>;
+  setEndDate: Dispatch<SetStateAction<Date | null>>;
+};
+
+export default function DateRangePicker({
+  setStartDate,
+  setEndDate,
+}: DateRangePickerProps) {
+  const [startDate, setStartDateState] = useState<Date | null>(
     sub(new Date(), { days: 7 }),
   );
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDateState] = useState<Date | null>(new Date());
+
+  useEffect(() => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+  }, [startDate, endDate, setStartDate, setEndDate]);
+
   return (
     <div>
       <DatePicker
         label="Start Date"
         format="dd/MM/yyyy"
         value={startDate}
-        onChange={setStartDate}
+        onChange={setStartDateState}
         views={["day", "month", "year"]}
       />
       <DatePicker
         label="End Date"
         format="dd/MM/yyyy"
         value={endDate}
-        onChange={setEndDate}
+        onChange={setEndDateState}
         views={["day", "month", "year"]}
       />
       <Button
