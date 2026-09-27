@@ -32,7 +32,11 @@ export const getTransactionsByDate = async (
     endDate,
     userId.toString(),
   );
-  return transactions;
+  //Formats the transaction to display only date
+  return transactions.map((transaction) => ({
+    ...transaction.toObject(),
+    date: transaction.date.toISOString().slice(0, 10),
+  }));
 };
 
 export const createTransaction = async (
