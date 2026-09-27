@@ -55,6 +55,18 @@ export const getTransactionsByDate = async (
         "No transactions found for the specified date range",
       );
     }
+    await Promise.all(
+      transactions.map(async (transaction) => {
+        const category = await CategoryService.getCategory(
+          new Types.ObjectId(transaction.category),
+        );
+        if (category) transaction.category = category.name;
+        const subcategoryName = category?.subcategory?.find(
+          (sub) => sub._id.toString() === transaction.subcategory.toString(),
+        )?.name;
+        if (subcategoryName) transaction.subcategory = subcategoryName;
+      }),
+    );
     res.status(200).json(transactions);
   } catch (error) {
     next(error);

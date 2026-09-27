@@ -40,6 +40,7 @@ export const transactionSchema = new Schema({
     required: true,
   },
   date: { type: Date, default: Date.now },
+  _id: { type: Schema.Types.ObjectId, auto: true },
 });
 
 type Transaction = InferSchemaType<typeof transactionSchema>;
