@@ -45,8 +45,8 @@ export default function DateRangePicker({
       <Button
         sx={{ height: 56 }}
         onClick={() => {
-          setStartDate(sub(startDate!, { months: 1 }));
-          setEndDate(sub(endDate!, { months: 1 }));
+          setStartDateState(sub(startDate!, { months: 1 }));
+          setEndDateState(sub(endDate!, { months: 1 }));
         }}
       >
         <KeyboardDoubleArrowLeftIcon />
@@ -54,8 +54,8 @@ export default function DateRangePicker({
       <Button
         sx={{ height: 56 }}
         onClick={() => {
-          setStartDate(sub(startDate!, { days: 7 }));
-          setEndDate(sub(endDate!, { days: 7 }));
+          setStartDateState(sub(startDate!, { days: 7 }));
+          setEndDateState(sub(endDate!, { days: 7 }));
         }}
       >
         <KeyboardArrowLeftIcon />
@@ -63,8 +63,8 @@ export default function DateRangePicker({
       <Button
         sx={{ height: 56 }}
         onClick={() => {
-          setStartDate(add(startDate!, { days: 7 }));
-          setEndDate(add(endDate!, { days: 7 }));
+          setStartDateState(add(startDate!, { days: 7 }));
+          setEndDateState(add(endDate!, { days: 7 }));
         }}
       >
         <KeyboardArrowRightIcon />
@@ -72,8 +72,8 @@ export default function DateRangePicker({
       <Button
         sx={{ height: 56 }}
         onClick={() => {
-          setStartDate(add(startDate!, { months: 1 }));
-          setEndDate(add(endDate!, { months: 1 }));
+          setStartDateState(add(startDate!, { months: 1 }));
+          setEndDateState(add(endDate!, { months: 1 }));
         }}
       >
         <KeyboardDoubleArrowRightIcon />
