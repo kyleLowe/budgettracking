@@ -8,7 +8,7 @@ import { AppContext } from "../providers/AppContextProvider";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
 
-export default function Transaction() {
+export default function TransactionInput() {
   const { user, getAllCurrencies, getAllCategories, createTransaction } =
     useContext(AppContext);
 

@@ -9,9 +9,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         sx={{
           py: 5,
           px: {
-            xs: 16,
-            md: 32,
-            lg: 64,
+            xs: 8,
+            md: 16,
+            lg: 32,
           },
           height: "100vh",
           width: "100%",
